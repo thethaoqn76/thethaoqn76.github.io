@@ -13,12 +13,15 @@
 <script>
 const domain = "meet.jit.si";
 
-let room = new URLSearchParams(window.location.search).get("room");
+const params = new URLSearchParams(window.location.search);
+let room = params.get("room");
 
+// Nếu không có room → tạo ngẫu nhiên
 if (!room) {
     room = Math.random().toString(36).substring(2, 8);
-    window.history.replaceState({}, '', '?room=' + room);
 }
+
+const userName = localStorage.getItem("username") || "Khách";
 
 const options = {
     roomName: room,
@@ -26,6 +29,9 @@ const options = {
     width: "100%",
     height: "100%",
     lang: "vi",
+    userInfo: {
+        displayName: userName
+    },
     configOverwrite: {
         prejoinPageEnabled: false,
         disableDeepLinking: true,
@@ -33,8 +39,9 @@ const options = {
     }
 };
 
-const api = new JitsiMeetExternalAPI(domain, options);
+new JitsiMeetExternalAPI(domain, options);
 </script>
+
 <!-- Header Logo -->
 <div id="appLogo">
     <div class="logo-circle">
@@ -71,7 +78,6 @@ const api = new JitsiMeetExternalAPI(domain, options);
 
 #appLogo:hover {
     transform: scale(1.05);
-    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
 }
 
 .logo-circle {
@@ -102,4 +108,3 @@ const api = new JitsiMeetExternalAPI(domain, options);
 
 </body>
 </html>
-
