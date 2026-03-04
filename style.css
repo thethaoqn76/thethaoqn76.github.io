@@ -1,3 +1,10 @@
+<style>
+/* Che logo Jitsi góc trái */
+.watermark,
+#react > div > div > div > header {
+    display: none !important;
+}
+</style>
 body{
     margin:0;
     font-family: Arial;
@@ -26,4 +33,5 @@ button{
     background:#4e73df;
     color:white;
     cursor:pointer;
+
 }
