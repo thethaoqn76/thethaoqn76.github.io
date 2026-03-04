@@ -11,46 +11,41 @@
 <div id="meet" style="width:100%; height:100vh;"></div>
 
 <script>
-  const domain = "meet.jit.si";
+window.onload = function () {
 
-  // Nếu không có ?room= thì tự tạo phòng
-  let room = new URLSearchParams(window.location.search).get("room");
-  if (!room) {
-      room = Math.random().toString(36).substring(2, 8);
-      window.history.replaceState({}, '', '?room=' + room);
-  }
+    const domain = "meet.jit.si";
 
-  const options = {
-    roomName: room,
-    width: "100%",
-    height: "100%",
-    parentNode: document.querySelector("#meet"),
-    lang: "vi",
+    // Lấy room từ URL
+    let room = new URLSearchParams(window.location.search).get("room");
 
-    configOverwrite: {
-      prejoinPageEnabled: false,
-      enableLobby: false,
-      disableModeratorIndicator: true,
-      requireDisplayName: false,
-      startWithAudioMuted: false,
-      startWithVideoMuted: false
-    },
-
-    interfaceConfigOverwrite: {
-      SHOW_JITSI_WATERMARK: false,
-      SHOW_BRAND_WATERMARK: false,
-      SHOW_POWERED_BY: false,
-      SHOW_WATERMARK_FOR_GUESTS: false,
-      MOBILE_APP_PROMO: false
+    // Nếu không có room thì tự tạo
+    if (!room) {
+        room = Math.random().toString(36).substring(2, 8);
+        window.history.replaceState({}, '', '?room=' + room);
     }
-  };
 
-  const api = new JitsiMeetExternalAPI(domain, options);
+    const options = {
+        roomName: room,
+        parentNode: document.querySelector("#meet"),
+        width: "100%",
+        height: "100%",
+        lang: "vi",
 
-  // Nếu lỗi load thì reload lại
-  api.addEventListener("videoConferenceJoined", () => {
-      console.log("Đã vào phòng:", room);
-  });
+        configOverwrite: {
+            prejoinPageEnabled: false,
+            enableLobby: false,
+            startWithAudioMuted: false,
+            startWithVideoMuted: false
+        }
+    };
+
+    const api = new JitsiMeetExternalAPI(domain, options);
+
+    api.addEventListener("videoConferenceJoined", () => {
+        console.log("Đã vào phòng:", room);
+    });
+
+};
 </script>
 
 <!-- Che logo + thêm tên -->
@@ -75,6 +70,6 @@ pointer-events: none;
 ">
   Zoom Mini | Minh Tuấn
 </div>
+
 </body>
 </html>
-
