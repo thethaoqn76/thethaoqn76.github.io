@@ -1,7 +1,8 @@
 <style>
-/* Che logo Jitsi góc trái */
-.watermark,
-#react > div > div > div > header {
+div[class*="watermark"] {
+    display: none !important;
+}
+header {
     display: none !important;
 }
 </style>
@@ -35,3 +36,4 @@ button{
     cursor:pointer;
 
 }
+
