@@ -1,39 +1,97 @@
-<style>
-div[class*="watermark"] {
-    display: none !important;
-}
-header {
-    display: none !important;
-}
-</style>
-body{
-    margin:0;
-    font-family: Arial;
-    background: linear-gradient(135deg,#4e73df,#1cc88a);
-    text-align:center;
+/* Reset nhẹ */
+* {
+    box-sizing: border-box;
 }
 
-.card{
-    background:white;
-    width:400px;
-    padding:30px;
-    margin:100px auto;
-    border-radius:15px;
+body {
+    margin: 0;
+    font-family: 'Segoe UI', Roboto, Arial, sans-serif;
+    background: linear-gradient(135deg, #4e73df, #1cc88a);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
 }
 
-input{
-    width:90%;
-    padding:10px;
-    margin:10px 0;
+/* Card chính */
+.card {
+    background: #ffffff;
+    width: 420px;
+    padding: 40px 35px;
+    border-radius: 20px;
+    box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+    text-align: center;
+    animation: fadeIn 0.6s ease;
 }
 
-button{
-    padding:10px 20px;
-    margin:10px;
-    border:none;
-    background:#4e73df;
-    color:white;
-    cursor:pointer;
-
+/* Tiêu đề */
+.card h1 {
+    margin-bottom: 30px;
+    font-size: 28px;
+    color: #2c3e50;
+    font-weight: 600;
 }
 
+/* Input */
+input {
+    width: 100%;
+    padding: 12px 15px;
+    margin: 10px 0;
+    border-radius: 10px;
+    border: 1px solid #dcdcdc;
+    font-size: 14px;
+    transition: all 0.3s ease;
+}
+
+input:focus {
+    border-color: #4e73df;
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(78,115,223,0.2);
+}
+
+/* Nút */
+button {
+    width: 48%;
+    padding: 12px;
+    margin: 15px 1%;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+/* Nút tạo phòng */
+button:first-of-type {
+    background: #4e73df;
+    color: white;
+}
+
+button:first-of-type:hover {
+    background: #2e59d9;
+    transform: translateY(-2px);
+}
+
+/* Nút tham gia */
+button:last-of-type {
+    background: #1cc88a;
+    color: white;
+}
+
+button:last-of-type:hover {
+    background: #17a673;
+    transform: translateY(-2px);
+}
+
+/* Hiệu ứng vào */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(20px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
