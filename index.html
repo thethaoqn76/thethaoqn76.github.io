@@ -13,7 +13,24 @@
     <input type="text" id="room" placeholder="Nhập tên phòng">
 
     <button onclick="createRoom()">Tạo phòng</button>
-    <button onclick="joinRoom()">Tham gia phòng</button>
+<button onclick="joinRoom()">Tham gia phòng</button>
+
+<script>
+function createRoom(){
+    const name = document.querySelector("input[placeholder='Nhập tên của bạn']").value;
+    const room = document.querySelector("input[placeholder='Nhập tên phòng']").value;
+
+    if(name && room){
+        window.location.href = "meeting.html?name=" + name + "&room=" + room;
+    } else {
+        alert("Vui lòng nhập đầy đủ thông tin");
+    }
+}
+
+function joinRoom(){
+    createRoom();
+}
+</script>
 </div>
 
 <script>
@@ -49,4 +66,5 @@ function joinRoom(){
 </script>
 
 </body>
+
 </html>
