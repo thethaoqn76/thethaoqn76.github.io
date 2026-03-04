@@ -1,34 +1,39 @@
 <!DOCTYPE html>
-<html>
+<html lang="vi">
 <head>
-    <title>Zoom Mini</title>
     <meta charset="UTF-8">
+    <title>Zoom Mini - Phòng họp</title>
     <script src="https://meet.jit.si/external_api.js"></script>
 </head>
 
-<body style="margin:0;">
+<body style="margin:0; overflow:hidden;">
 
 <div id="meet" style="width:100%; height:100vh;"></div>
 
 <script>
   const domain = "meet.jit.si";
-  const room = new URLSearchParams(window.location.search).get("room") || "zoommini";
+
+  // Nếu không có ?room= thì tự tạo phòng
+  let room = new URLSearchParams(window.location.search).get("room");
+  if (!room) {
+      room = Math.random().toString(36).substring(2, 8);
+      window.history.replaceState({}, '', '?room=' + room);
+  }
 
   const options = {
     roomName: room,
     width: "100%",
     height: "100%",
     parentNode: document.querySelector("#meet"),
-
     lang: "vi",
 
     configOverwrite: {
       prejoinPageEnabled: false,
       enableLobby: false,
       disableModeratorIndicator: true,
+      requireDisplayName: false,
       startWithAudioMuted: false,
-      startWithVideoMuted: false,
-      requireDisplayName: false
+      startWithVideoMuted: false
     },
 
     interfaceConfigOverwrite: {
@@ -36,24 +41,30 @@
       SHOW_BRAND_WATERMARK: false,
       SHOW_POWERED_BY: false,
       SHOW_WATERMARK_FOR_GUESTS: false,
-      DISPLAY_WELCOME_PAGE_CONTENT: false,
       MOBILE_APP_PROMO: false
     }
   };
 
   const api = new JitsiMeetExternalAPI(domain, options);
+
+  // Nếu lỗi load thì reload lại
+  api.addEventListener("videoConferenceJoined", () => {
+      console.log("Đã vào phòng:", room);
+  });
 </script>
-<!-- Che logo góc trái -->
+
+<!-- CHE TOÀN BỘ HEADER TRÊN CÙNG -->
 <div style="
 position: fixed;
 top: 0;
 left: 0;
-width: 180px;
-height: 70px;
+width: 100%;
+height: 80px;
 background: #1c2b36;
 z-index: 9999;
+pointer-events: none;
 ">
 </div>
+
 </body>
 </html>
-
