@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Zoom Mini</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<div class="card">
+    <h1>Zoom Mini</h1>
+
+    <input type="text" id="username" placeholder="Nhập tên của bạn">
+    <input type="text" id="room" placeholder="Nhập tên phòng">
+
+    <button onclick="createRoom()">Tạo phòng</button>
+    <button onclick="joinRoom()">Tham gia phòng</button>
+</div>
+
+<script>
+function createRoom(){
+    let name = document.getElementById("username").value;
+    let room = document.getElementById("room").value;
+
+    if(name=="" || room==""){
+        alert("Nhập đầy đủ thông tin");
+        return;
+    }
+
+    localStorage.setItem("username", name);
+    localStorage.setItem("isHost", "true");
+
+    window.location.href = "meeting.html?room=" + room;
+}
+
+function joinRoom(){
+    let name = document.getElementById("username").value;
+    let room = document.getElementById("room").value;
+
+    if(name=="" || room==""){
+        alert("Nhập đầy đủ thông tin");
+        return;
+    }
+
+    localStorage.setItem("username", name);
+    localStorage.setItem("isHost", "false");
+
+    window.location.href = "meeting.html?room=" + room;
+}
+</script>
+
+</body>
+</html>
