@@ -13,16 +13,13 @@
 <script>
 const domain = "meet.jit.si";
 
-// Lấy room từ URL
 let room = new URLSearchParams(window.location.search).get("room");
 
-// Nếu chưa có room thì tạo random
 if (!room) {
     room = Math.random().toString(36).substring(2, 8);
     window.history.replaceState({}, '', '?room=' + room);
 }
 
-// Khởi tạo Jitsi ngay lập tức (không cho hiện Start meeting)
 const options = {
     roomName: room,
     parentNode: document.querySelector("#meet"),
@@ -30,13 +27,14 @@ const options = {
     height: "100%",
     lang: "vi",
     configOverwrite: {
-        prejoinPageEnabled: false
+        prejoinPageEnabled: false,
+        disableDeepLinking: true,
+        enableWelcomePage: false
     }
 };
 
 const api = new JitsiMeetExternalAPI(domain, options);
 </script>
-
 <!-- Header Logo -->
 <div id="appLogo">
     <div class="logo-circle">
@@ -104,3 +102,4 @@ const api = new JitsiMeetExternalAPI(domain, options);
 
 </body>
 </html>
+
