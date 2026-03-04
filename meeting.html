@@ -48,27 +48,69 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 <!-- Header che logo -->
-<div style="
-position: fixed;
-top: 0;
-left: 0;
-width: 220px;
-height: 70px;
-background: linear-gradient(135deg, #1c2b36, #243b55);
-z-index: 9999;
-display: flex;
-align-items: center;
-padding-left: 15px;
-color: white;
-font-family: Arial, sans-serif;
-font-weight: 500;
-font-size: 16px;
-letter-spacing: 0.5px;
-box-shadow: 0 2px 10px rgba(0,0,0,0.4);
-pointer-events: none;
-">
-  Zoom Mini | Minh Tuấn
+<div id="appLogo">
+    <div class="logo-circle">
+        <svg viewBox="0 0 24 24" fill="white">
+            <path d="M17 10.5V7c0-1.1-.9-2-2-2H5C3.9 5 3 5.9 3 7v10c0 
+            1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-3.5l4 
+            4v-11l-4 4z"/>
+        </svg>
+    </div>
+    <div class="logo-content">
+        <div class="logo-name">Zoom Mini</div>
+        <div class="logo-tag">Thể Thao QN</div>
+    </div>
 </div>
 
+<style>
+#appLogo {
+    position: fixed;
+    top: 18px;
+    left: 18px;
+    z-index: 9999;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 10px 18px;
+    background: rgba(20, 30, 45, 0.75);
+    backdrop-filter: blur(12px);
+    border-radius: 60px;
+    box-shadow: 0 8px 25px rgba(0,0,0,0.4);
+    font-family: 'Segoe UI', sans-serif;
+    color: white;
+    transition: 0.3s ease;
+}
+
+#appLogo:hover {
+    transform: scale(1.05);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+}
+
+.logo-circle {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #2563eb, #3b82f6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.logo-circle svg {
+    width: 20px;
+    height: 20px;
+}
+
+.logo-name {
+    font-size: 15px;
+    font-weight: 600;
+}
+
+.logo-tag {
+    font-size: 11px;
+    opacity: 0.7;
+}
+</style>
 </body>
 </html>
+
