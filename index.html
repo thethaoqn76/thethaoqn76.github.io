@@ -11,32 +11,15 @@
 
     <input type="text" id="username" placeholder="Nhập tên của bạn">
     <input type="text" id="room" placeholder="Nhập tên phòng">
-
+    
     <button onclick="createRoom()">Tạo phòng</button>
-<button onclick="joinRoom()">Tham gia phòng</button>
-
-<script>
-function createRoom(){
-    const name = document.querySelector("input[placeholder='Nhập tên của bạn']").value;
-    const room = document.querySelector("input[placeholder='Nhập tên phòng']").value;
-
-    if(name && room){
-        window.location.href = "meeting.html?name=" + name + "&room=" + room;
-    } else {
-        alert("Vui lòng nhập đầy đủ thông tin");
-    }
-}
-
-function joinRoom(){
-    createRoom();
-}
-</script>
+    <button onclick="joinRoom()">Tham gia phòng</button>
 </div>
 
 <script>
 function createRoom(){
-    let name = document.getElementById("username").value;
-    let room = document.getElementById("room").value;
+    let name = document.getElementById("username").value.trim();
+    let room = document.getElementById("room").value.trim();
 
     if(name=="" || room==""){
         alert("Nhập đầy đủ thông tin");
@@ -46,12 +29,12 @@ function createRoom(){
     localStorage.setItem("username", name);
     localStorage.setItem("isHost", "true");
 
-    window.location.href = "meeting.html?room=" + room;
+    window.location.href = "meeting.html?room=" + encodeURIComponent(room);
 }
 
 function joinRoom(){
-    let name = document.getElementById("username").value;
-    let room = document.getElementById("room").value;
+    let name = document.getElementById("username").value.trim();
+    let room = document.getElementById("room").value.trim();
 
     if(name=="" || room==""){
         alert("Nhập đầy đủ thông tin");
@@ -61,10 +44,9 @@ function joinRoom(){
     localStorage.setItem("username", name);
     localStorage.setItem("isHost", "false");
 
-    window.location.href = "meeting.html?room=" + room;
+    window.location.href = "meeting.html?room=" + encodeURIComponent(room);
 }
 </script>
 
 </body>
-
 </html>
