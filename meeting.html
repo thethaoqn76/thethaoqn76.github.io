@@ -111,6 +111,15 @@ document.addEventListener("DOMContentLoaded", function () {
     opacity: 0.7;
 }
 </style>
+    <script>
+const params = new URLSearchParams(window.location.search);
+const userName = params.get("name");
+const roomName = params.get("room");
+
+console.log("User:", userName);
+console.log("Room:", roomName);
+</script>
 </body>
 </html>
+
 
