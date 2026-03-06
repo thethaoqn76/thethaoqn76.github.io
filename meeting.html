@@ -7,12 +7,15 @@
 <script src="https://meet.jit.si/external_api.js"></script>
 
 <style>
+
 body{
 margin:0;
 overflow:hidden;
+font-family:'Segoe UI',sans-serif;
 }
 
 /* Logo */
+
 #appLogo{
 position:fixed;
 top:18px;
@@ -26,7 +29,6 @@ background:rgba(20,30,45,0.75);
 backdrop-filter:blur(12px);
 border-radius:60px;
 box-shadow:0 8px 25px rgba(0,0,0,0.4);
-font-family:'Segoe UI',sans-serif;
 color:white;
 }
 
@@ -59,8 +61,8 @@ opacity:0.7;
 
 #copyLink{
 position:fixed;
-top:90px;      /* nằm dưới logo */
-left:20px;     /* sát bên trái */
+top:90px;
+left:20px;
 z-index:9999;
 padding:10px 18px;
 border:none;
@@ -71,6 +73,11 @@ cursor:pointer;
 font-weight:500;
 box-shadow:0 4px 10px rgba(0,0,0,0.2);
 }
+
+#copyLink:hover{
+background:#1d4ed8;
+}
+
 </style>
 
 </head>
@@ -78,6 +85,27 @@ box-shadow:0 4px 10px rgba(0,0,0,0.2);
 <body>
 
 <div id="meet" style="width:100%;height:100vh;"></div>
+
+<!-- Logo -->
+
+<div id="appLogo">
+
+<div class="logo-circle">
+<svg viewBox="0 0 24 24" fill="white">
+<path d="M17 10.5V7c0-1.1-.9-2-2-2H5C3.9 5 3 5.9 3 7v10c0 
+1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-3.5l4 
+4v-11l-4 4z"/>
+</svg>
+</div>
+
+<div>
+<div class="logo-name">Zoom Mini</div>
+<div class="logo-tag">Thể Thao QN</div>
+</div>
+
+</div>
+
+<button id="copyLink">Copy link phòng</button>
 
 <script>
 
@@ -87,7 +115,8 @@ const params = new URLSearchParams(window.location.search);
 
 let room = params.get("room");
 
-/* FIX lỗi phòng có dấu */
+/* Xử lý tên phòng */
+
 if(room){
 room = room
 .normalize("NFD")
@@ -96,7 +125,8 @@ room = room
 .toLowerCase();
 }
 
-/* nếu không có phòng */
+/* Nếu chưa có phòng → tạo phòng */
+
 if(!room){
 room = "zoommini"+Math.floor(Math.random()*10000);
 window.history.replaceState({},'',"?room="+room);
@@ -104,9 +134,7 @@ window.history.replaceState({},'',"?room="+room);
 
 const userName = localStorage.getItem("username") || "Khách";
 
-/* Delay khởi tạo để tránh lỗi trắng màn hình */
-
-setTimeout(()=>{
+/* Khởi tạo Jitsi */
 
 const options = {
 
@@ -127,17 +155,13 @@ displayName:userName
 configOverwrite:{
 
 prejoinPageEnabled:false,
-
-disableDeepLinking:true,
-
 enableWelcomePage:false,
+disableDeepLinking:true,
 
 startWithAudioMuted:true,
 startWithVideoMuted:false,
 
-channelLastN:6,
-disableSimulcast:false,
-enableLayerSuspension:true
+channelLastN:6
 
 },
 
@@ -153,48 +177,15 @@ MOBILE_APP_PROMO:false
 
 };
 
-window.api = new JitsiMeetExternalAPI(domain,options);
-
-/* Nếu bị disconnect → tự reconnect */
-
-api.addEventListener("videoConferenceLeft",()=>{
-
-setTimeout(()=>{
-location.reload();
-},2000);
-
-});
-
-},800);
+const api = new JitsiMeetExternalAPI(domain,options);
 
 </script>
-
-<!-- Logo -->
-
-<div id="appLogo">
-
-<div class="logo-circle">
-<svg viewBox="0 0 24 24" fill="white">
-<path d="M17 10.5V7c0-1.1-.9-2-2-2H5C3.9 5 3 5.9 3 7v10c0 
-1.1.9 2 2 2h10c1.1 0 2-.9 2-2v-3.5l4 
-4v-11l-4 4z"/>
-</svg>
-</div>
-
-<div class="logo-content">
-<div class="logo-name">Zoom Mini</div>
-<div class="logo-tag">Thể Thao QN</div>
-</div>
-
-</div>
-
-<button id="copyLink">Copy link phòng</button>
 
 <script>
 
 document.getElementById("copyLink").onclick=function(){
 
-const link=window.location.href;
+const link = window.location.href;
 
 navigator.clipboard.writeText(link);
 
