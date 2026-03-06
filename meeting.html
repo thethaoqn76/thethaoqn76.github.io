@@ -159,6 +159,34 @@ location.reload();
 </div>
 
 </div>
+<button id="copyLink">Copy link phòng</button>
 
+<style>
+#copyLink{
+position:fixed;
+top:18px;
+right:20px;
+z-index:9999;
+padding:10px 18px;
+border:none;
+border-radius:20px;
+background:#2563eb;
+color:white;
+cursor:pointer;
+font-weight:500;
+}
+</style>
+
+<script>
+document.getElementById("copyLink").onclick = function(){
+
+const link = window.location.href;
+
+navigator.clipboard.writeText(link);
+
+alert("Đã copy link phòng!");
+}
+</script>
 </body>
 </html>
+
