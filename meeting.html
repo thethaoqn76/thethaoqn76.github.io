@@ -13,6 +13,47 @@
 <script>
 const domain = "meet.jit.si";
 
+let room = new URLSearchParams(window.location.search).get("room");
+let name = localStorage.getItem("username");
+
+if (!room) {
+    room = "zoommini-" + Math.random().toString(36).substring(2,8);
+    window.history.replaceState({}, '', '?room=' + room);
+}
+
+if (!name) {
+    name = "Khách";
+}
+
+const options = {
+    roomName: room,
+    parentNode: document.querySelector("#meet"),
+    width: "100%",
+    height: "100%",
+
+    userInfo: {
+        displayName: name
+    },
+
+    configOverwrite: {
+        prejoinPageEnabled: false,
+        enableWelcomePage: false,
+        disableDeepLinking: true,
+        startWithAudioMuted: false,
+        startWithVideoMuted: false,
+        enableNoAudioDetection: false,
+        enableNoisyMicDetection: false
+    },
+
+    interfaceConfigOverwrite: {
+        SHOW_JITSI_WATERMARK: false,
+        SHOW_BRAND_WATERMARK: false,
+        SHOW_POWERED_BY: false
+    }
+};
+
+const api = new JitsiMeetExternalAPI(domain, options);
+
 const params = new URLSearchParams(window.location.search);
 let room = params.get("room");
 
@@ -108,3 +149,4 @@ new JitsiMeetExternalAPI(domain, options);
 
 </body>
 </html>
+
