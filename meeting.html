@@ -28,11 +28,6 @@ border-radius:60px;
 box-shadow:0 8px 25px rgba(0,0,0,0.4);
 font-family:'Segoe UI',sans-serif;
 color:white;
-transition:0.3s;
-}
-
-#appLogo:hover{
-transform:scale(1.05);
 }
 
 .logo-circle{
@@ -59,6 +54,22 @@ font-weight:600;
 font-size:11px;
 opacity:0.7;
 }
+
+/* Nút copy link */
+
+#copyLink{
+position:fixed;
+top:18px;
+right:20px;
+z-index:9999;
+padding:10px 18px;
+border:none;
+border-radius:20px;
+background:#2563eb;
+color:white;
+cursor:pointer;
+font-weight:500;
+}
 </style>
 
 </head>
@@ -75,14 +86,26 @@ const params = new URLSearchParams(window.location.search);
 
 let room = params.get("room");
 
-/* Nếu chưa có phòng → tạo phòng */
+/* FIX lỗi phòng có dấu */
+if(room){
+room = room
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g,"")
+.replace(/[^a-zA-Z0-9]/g,"")
+.toLowerCase();
+}
+
+/* nếu không có phòng */
 if(!room){
-room = Math.random().toString(36).substring(2,8);
+room = "zoommini"+Math.floor(Math.random()*10000);
 window.history.replaceState({},'',"?room="+room);
 }
 
-/* Lấy tên người dùng */
 const userName = localStorage.getItem("username") || "Khách";
+
+/* Delay khởi tạo để tránh lỗi trắng màn hình */
+
+setTimeout(()=>{
 
 const options = {
 
@@ -108,14 +131,13 @@ disableDeepLinking:true,
 
 enableWelcomePage:false,
 
-/* Fix lỗi nhiều người */
 startWithAudioMuted:true,
 startWithVideoMuted:false,
 
-/* Tối ưu mạng */
 channelLastN:6,
 disableSimulcast:false,
 enableLayerSuspension:true
+
 },
 
 interfaceConfigOverwrite:{
@@ -124,25 +146,30 @@ SHOW_JITSI_WATERMARK:false,
 SHOW_BRAND_WATERMARK:false,
 SHOW_POWERED_BY:false,
 SHOW_WATERMARK_FOR_GUESTS:false,
-
 MOBILE_APP_PROMO:false
 
 }
 
 };
 
-const api = new JitsiMeetExternalAPI(domain,options);
+window.api = new JitsiMeetExternalAPI(domain,options);
 
-/* Nếu lỗi mạng → tự reload */
+/* Nếu bị disconnect → tự reconnect */
+
 api.addEventListener("videoConferenceLeft",()=>{
+
 setTimeout(()=>{
 location.reload();
 },2000);
+
 });
+
+},800);
 
 </script>
 
 <!-- Logo -->
+
 <div id="appLogo">
 
 <div class="logo-circle">
@@ -159,34 +186,22 @@ location.reload();
 </div>
 
 </div>
+
 <button id="copyLink">Copy link phòng</button>
 
-<style>
-#copyLink{
-position:fixed;
-top:18px;
-right:20px;
-z-index:9999;
-padding:10px 18px;
-border:none;
-border-radius:20px;
-background:#2563eb;
-color:white;
-cursor:pointer;
-font-weight:500;
-}
-</style>
-
 <script>
-document.getElementById("copyLink").onclick = function(){
 
-const link = window.location.href;
+document.getElementById("copyLink").onclick=function(){
+
+const link=window.location.href;
 
 navigator.clipboard.writeText(link);
 
 alert("Đã copy link phòng!");
+
 }
+
 </script>
+
 </body>
 </html>
-
