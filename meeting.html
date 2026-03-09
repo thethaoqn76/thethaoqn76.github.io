@@ -80,12 +80,6 @@ transition:0.2s;
 background:#1d4ed8;
 transform:scale(1.05);
 }
-.watermark,
-.leftwatermark,
-.welcome-page-content,
-.welcome-page-footer{
-display:none !important;
-}
 
 </style>
 
@@ -164,8 +158,12 @@ displayName:userName
 
 configOverwrite:{
 
+/* TẮT TRANG THAM GIA */
+
 prejoinPageEnabled:false,
+
 enableWelcomePage:false,
+
 disableDeepLinking:true,
 
 startWithAudioMuted:true,
@@ -173,13 +171,9 @@ startWithVideoMuted:false,
 
 channelLastN:6,
 
-/* giúp cuộc họp ổn định hơn */
-
 p2p:{
 enabled:true
 },
-
-/* không giới hạn người */
 
 maxFullResolutionParticipants:30
 
@@ -191,7 +185,19 @@ SHOW_JITSI_WATERMARK:false,
 SHOW_BRAND_WATERMARK:false,
 SHOW_POWERED_BY:false,
 SHOW_WATERMARK_FOR_GUESTS:false,
-MOBILE_APP_PROMO:false
+MOBILE_APP_PROMO:false,
+
+/* ẨN NÚT KHÔNG CẦN */
+
+TOOLBAR_BUTTONS:[
+"microphone",
+"camera",
+"desktop",
+"fullscreen",
+"hangup",
+"chat",
+"participants-pane"
+]
 
 }
 
