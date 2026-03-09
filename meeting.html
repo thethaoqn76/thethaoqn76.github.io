@@ -1,4 +1,5 @@
 <!DOCTYPE html>
+
 <html lang="vi">
 <head>
 <meta charset="UTF-8">
@@ -57,7 +58,7 @@ font-size:11px;
 opacity:0.7;
 }
 
-/* Nút copy link */
+/* Nút copy */
 
 #copyLink{
 position:fixed;
@@ -112,15 +113,16 @@ transform:scale(1.05);
 
 <script>
 
-/* SERVER KHÔNG GIỚI HẠN THỜI GIAN */
+/* SERVER */
 
 const domain = "meet.ffmuc.net";
 
-const params = new URLSearchParams(window.location.search);
+/* LẤY ROOM */
 
+const params = new URLSearchParams(window.location.search);
 let room = params.get("room");
 
-/* Xử lý tên phòng */
+/* CHUẨN HÓA ROOM */
 
 if(room){
 room = room
@@ -130,7 +132,7 @@ room = room
 .toLowerCase();
 }
 
-/* Nếu chưa có phòng → tạo phòng */
+/* TẠO ROOM */
 
 if(!room){
 room = "zoommini"+Math.floor(Math.random()*10000);
@@ -139,7 +141,7 @@ window.history.replaceState({},'',"?room="+room);
 
 const userName = localStorage.getItem("username") || "Khách";
 
-/* Khởi tạo Jitsi */
+/* OPTIONS */
 
 const options = {
 
@@ -167,13 +169,9 @@ startWithVideoMuted:false,
 
 channelLastN:6,
 
-/* giúp cuộc họp ổn định hơn */
-
 p2p:{
 enabled:true
 },
-
-/* không giới hạn người */
 
 maxFullResolutionParticipants:30
 
@@ -191,19 +189,29 @@ MOBILE_APP_PROMO:false
 
 };
 
+/* TẠO PHÒNG */
+
 const api = new JitsiMeetExternalAPI(domain,options);
 
-/* Copy link */
+/* COPY LINK */
 
 document.getElementById("copyLink").onclick=function(){
 
-const link = window.location.href;
-
-navigator.clipboard.writeText(link);
+navigator.clipboard.writeText(window.location.href);
 
 alert("Đã copy link phòng!");
 
 }
+
+/* CHẶN TRANG JITSI KHI RỜI PHÒNG */
+
+api.addListener("readyToClose",function(){
+
+/* quay lại phòng */
+
+window.location.href = window.location.origin + window.location.pathname + "?room="+room;
+
+});
 
 </script>
 
