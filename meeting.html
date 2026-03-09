@@ -12,6 +12,7 @@ body{
 margin:0;
 overflow:hidden;
 font-family:'Segoe UI',sans-serif;
+background:#000;
 }
 
 /* Logo */
@@ -26,7 +27,7 @@ align-items:center;
 gap:12px;
 padding:10px 18px;
 background:rgba(20,30,45,0.75);
-backdrop-filter:blur(12px);
+backdrop-filter:blur(10px);
 border-radius:60px;
 box-shadow:0 8px 25px rgba(0,0,0,0.4);
 color:white;
@@ -57,7 +58,7 @@ font-size:11px;
 opacity:0.7;
 }
 
-/* Nút copy link */
+/* Nút copy */
 
 #copyLink{
 position:fixed;
@@ -112,15 +113,16 @@ transform:scale(1.05);
 
 <script>
 
-/* SERVER KHÔNG GIỚI HẠN THỜI GIAN */
+/* Server Jitsi */
 
 const domain = "meet.ffmuc.net";
 
-const params = new URLSearchParams(window.location.search);
+/* Lấy phòng */
 
+const params = new URLSearchParams(window.location.search);
 let room = params.get("room");
 
-/* Xử lý tên phòng */
+/* Chuẩn hóa tên phòng */
 
 if(room){
 room = room
@@ -130,16 +132,18 @@ room = room
 .toLowerCase();
 }
 
-/* Nếu chưa có phòng → tạo phòng */
+/* Nếu chưa có phòng */
 
 if(!room){
-room = "zoommini"+Math.floor(Math.random()*10000);
+room = "zoommini"+Math.floor(Math.random()*100000);
 window.history.replaceState({},'',"?room="+room);
 }
 
+/* Tên người dùng */
+
 const userName = localStorage.getItem("username") || "Khách";
 
-/* Khởi tạo Jitsi */
+/* Khởi tạo phòng */
 
 const options = {
 
@@ -158,24 +162,18 @@ displayName:userName
 
 configOverwrite:{
 
-/* TẮT TRANG THAM GIA */
+/* BỎ TRANG PREJOIN → không hiện MANUAL FAQ CONTACT */
 
 prejoinPageEnabled:false,
 
-enableWelcomePage:false,
-
-disableDeepLinking:true,
-
 startWithAudioMuted:true,
 startWithVideoMuted:false,
-
-channelLastN:6,
 
 p2p:{
 enabled:true
 },
 
-maxFullResolutionParticipants:30
+channelLastN:6
 
 },
 
@@ -185,23 +183,13 @@ SHOW_JITSI_WATERMARK:false,
 SHOW_BRAND_WATERMARK:false,
 SHOW_POWERED_BY:false,
 SHOW_WATERMARK_FOR_GUESTS:false,
-MOBILE_APP_PROMO:false,
-
-/* ẨN NÚT KHÔNG CẦN */
-
-TOOLBAR_BUTTONS:[
-"microphone",
-"camera",
-"desktop",
-"fullscreen",
-"hangup",
-"chat",
-"participants-pane"
-]
+MOBILE_APP_PROMO:false
 
 }
 
 };
+
+/* Tạo phòng */
 
 const api = new JitsiMeetExternalAPI(domain,options);
 
@@ -209,9 +197,7 @@ const api = new JitsiMeetExternalAPI(domain,options);
 
 document.getElementById("copyLink").onclick=function(){
 
-const link = window.location.href;
-
-navigator.clipboard.writeText(link);
+navigator.clipboard.writeText(window.location.href);
 
 alert("Đã copy link phòng!");
 
