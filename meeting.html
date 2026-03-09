@@ -58,7 +58,7 @@ font-size:11px;
 opacity:0.7;
 }
 
-/* Nút copy */
+/* Copy link */
 
 #copyLink{
 position:fixed;
@@ -74,12 +74,6 @@ cursor:pointer;
 font-weight:500;
 font-size:14px;
 box-shadow:0 4px 12px rgba(0,0,0,0.3);
-transition:0.2s;
-}
-
-#copyLink:hover{
-background:#1d4ed8;
-transform:scale(1.05);
 }
 
 </style>
@@ -89,8 +83,6 @@ transform:scale(1.05);
 <body>
 
 <div id="meet" style="width:100%;height:100vh;"></div>
-
-<!-- Logo -->
 
 <div id="appLogo">
 
@@ -113,24 +105,14 @@ transform:scale(1.05);
 
 <script>
 
-/* Server Jitsi */
+/* Server */
 
 const domain = "meet.ffmuc.net";
 
-/* Lấy phòng */
+/* Lấy room */
 
 const params = new URLSearchParams(window.location.search);
 let room = params.get("room");
-
-/* Chuẩn hóa tên phòng */
-
-if(room){
-room = room
-.normalize("NFD")
-.replace(/[\u0300-\u036f]/g,"")
-.replace(/[^a-zA-Z0-9]/g,"")
-.toLowerCase();
-}
 
 /* Nếu chưa có phòng */
 
@@ -139,9 +121,14 @@ room = "zoommini"+Math.floor(Math.random()*100000);
 window.history.replaceState({},'',"?room="+room);
 }
 
-/* Tên người dùng */
+/* Tạo tên tự động */
 
-const userName = localStorage.getItem("username") || "Khách";
+let userName = localStorage.getItem("username");
+
+if(!userName){
+userName = "User"+Math.floor(Math.random()*1000);
+localStorage.setItem("username",userName);
+}
 
 /* Khởi tạo phòng */
 
@@ -162,18 +149,14 @@ displayName:userName
 
 configOverwrite:{
 
-/* BỎ TRANG PREJOIN → không hiện MANUAL FAQ CONTACT */
-
 prejoinPageEnabled:false,
+enableWelcomePage:false,
+disableDeepLinking:true,
 
 startWithAudioMuted:true,
 startWithVideoMuted:false,
 
-p2p:{
-enabled:true
-},
-
-channelLastN:6
+p2p:{ enabled:true }
 
 },
 
@@ -188,8 +171,6 @@ MOBILE_APP_PROMO:false
 }
 
 };
-
-/* Tạo phòng */
 
 const api = new JitsiMeetExternalAPI(domain,options);
 
