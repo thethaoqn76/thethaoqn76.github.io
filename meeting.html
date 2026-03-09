@@ -15,6 +15,14 @@ font-family:'Segoe UI',sans-serif;
 background:#000;
 }
 
+/* Ẩn menu ngoài của Jitsi */
+body > a,
+body > nav,
+body > footer,
+body > header{
+display:none !important;
+}
+
 /* Logo */
 
 #appLogo{
@@ -58,7 +66,7 @@ font-size:11px;
 opacity:0.7;
 }
 
-/* Copy link */
+/* Nút copy */
 
 #copyLink{
 position:fixed;
@@ -74,6 +82,12 @@ cursor:pointer;
 font-weight:500;
 font-size:14px;
 box-shadow:0 4px 12px rgba(0,0,0,0.3);
+transition:0.2s;
+}
+
+#copyLink:hover{
+background:#1d4ed8;
+transform:scale(1.05);
 }
 
 </style>
@@ -83,6 +97,8 @@ box-shadow:0 4px 12px rgba(0,0,0,0.3);
 <body>
 
 <div id="meet" style="width:100%;height:100vh;"></div>
+
+<!-- Logo -->
 
 <div id="appLogo">
 
@@ -109,10 +125,20 @@ box-shadow:0 4px 12px rgba(0,0,0,0.3);
 
 const domain = "meet.ffmuc.net";
 
-/* Lấy room */
+/* Lấy phòng */
 
 const params = new URLSearchParams(window.location.search);
 let room = params.get("room");
+
+/* Chuẩn hóa tên phòng */
+
+if(room){
+room = room
+.normalize("NFD")
+.replace(/[\u0300-\u036f]/g,"")
+.replace(/[^a-zA-Z0-9]/g,"")
+.toLowerCase();
+}
 
 /* Nếu chưa có phòng */
 
@@ -121,14 +147,9 @@ room = "zoommini"+Math.floor(Math.random()*100000);
 window.history.replaceState({},'',"?room="+room);
 }
 
-/* Tạo tên tự động */
+/* Tên người dùng */
 
-let userName = localStorage.getItem("username");
-
-if(!userName){
-userName = "User"+Math.floor(Math.random()*1000);
-localStorage.setItem("username",userName);
-}
+const userName = localStorage.getItem("username") || "Khách";
 
 /* Khởi tạo phòng */
 
@@ -150,13 +171,14 @@ displayName:userName
 configOverwrite:{
 
 prejoinPageEnabled:false,
-enableWelcomePage:false,
-disableDeepLinking:true,
-
 startWithAudioMuted:true,
 startWithVideoMuted:false,
 
-p2p:{ enabled:true }
+p2p:{
+enabled:true
+},
+
+channelLastN:6
 
 },
 
@@ -171,6 +193,8 @@ MOBILE_APP_PROMO:false
 }
 
 };
+
+/* Tạo phòng */
 
 const api = new JitsiMeetExternalAPI(domain,options);
 
