@@ -12,15 +12,6 @@ body{
 margin:0;
 overflow:hidden;
 font-family:'Segoe UI',sans-serif;
-background:#000;
-}
-
-/* Ẩn menu ngoài của Jitsi */
-body > a,
-body > nav,
-body > footer,
-body > header{
-display:none !important;
 }
 
 /* Logo */
@@ -35,7 +26,7 @@ align-items:center;
 gap:12px;
 padding:10px 18px;
 background:rgba(20,30,45,0.75);
-backdrop-filter:blur(10px);
+backdrop-filter:blur(12px);
 border-radius:60px;
 box-shadow:0 8px 25px rgba(0,0,0,0.4);
 color:white;
@@ -66,7 +57,7 @@ font-size:11px;
 opacity:0.7;
 }
 
-/* Nút copy */
+/* Nút copy link */
 
 #copyLink{
 position:fixed;
@@ -121,16 +112,15 @@ transform:scale(1.05);
 
 <script>
 
-/* Server */
+/* SERVER KHÔNG GIỚI HẠN THỜI GIAN */
 
 const domain = "meet.ffmuc.net";
 
-/* Lấy phòng */
-
 const params = new URLSearchParams(window.location.search);
+
 let room = params.get("room");
 
-/* Chuẩn hóa tên phòng */
+/* Xử lý tên phòng */
 
 if(room){
 room = room
@@ -140,18 +130,16 @@ room = room
 .toLowerCase();
 }
 
-/* Nếu chưa có phòng */
+/* Nếu chưa có phòng → tạo phòng */
 
 if(!room){
-room = "zoommini"+Math.floor(Math.random()*100000);
+room = "zoommini"+Math.floor(Math.random()*10000);
 window.history.replaceState({},'',"?room="+room);
 }
 
-/* Tên người dùng */
-
 const userName = localStorage.getItem("username") || "Khách";
 
-/* Khởi tạo phòng */
+/* Khởi tạo Jitsi */
 
 const options = {
 
@@ -171,14 +159,23 @@ displayName:userName
 configOverwrite:{
 
 prejoinPageEnabled:false,
+enableWelcomePage:false,
+disableDeepLinking:true,
+
 startWithAudioMuted:true,
 startWithVideoMuted:false,
+
+channelLastN:6,
+
+/* giúp cuộc họp ổn định hơn */
 
 p2p:{
 enabled:true
 },
 
-channelLastN:6
+/* không giới hạn người */
+
+maxFullResolutionParticipants:30
 
 },
 
@@ -194,15 +191,15 @@ MOBILE_APP_PROMO:false
 
 };
 
-/* Tạo phòng */
-
 const api = new JitsiMeetExternalAPI(domain,options);
 
 /* Copy link */
 
 document.getElementById("copyLink").onclick=function(){
 
-navigator.clipboard.writeText(window.location.href);
+const link = window.location.href;
+
+navigator.clipboard.writeText(link);
 
 alert("Đã copy link phòng!");
 
